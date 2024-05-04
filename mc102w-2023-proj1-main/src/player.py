@@ -36,7 +36,7 @@ def player(guess_hist, res_hist):
     if len(guess_hist) == 0:
         return [RED, GREEN, BLUE, YELLOW]
     else:
-        return all_arrangements(4, [1, 2, 3, 4, 5, 6, 7], guess_hist, res_hist)
+        return all_arrangements(4, colors, guess_hist, res_hist)
 
 def all_arrangements(len_list, elements_list, guess_hist, res_hist):
 
@@ -54,28 +54,22 @@ def all_arrangements(len_list, elements_list, guess_hist, res_hist):
                 else:
                     return test
             else:
-                arrang_append = arrang.copy()
-                if test_validation(arrang_append, guess_hist, res_hist):
-                    test = num_in_color(arrang_append)
-                    return test
+                if test_validation(arrang, guess_hist, res_hist):
+                    return arrang
+                    
 
     return add_elements(elements_list, 0)
 
 def test_validation(test, guess_hist, res_hist):
 
-    for previous_test in guess_hist:
+    for i in range(len(guess_hist)):
 
-        i = guess_hist.index(previous_test)
-
-        previous_test = color_in_num(previous_test)
-
-        if quantity_valid(test, previous_test, res_hist[i]) and position_valid(test, previous_test, res_hist[i]) and test != previous_test:
+        if quantity_valid(test, guess_hist[i], res_hist[i]) and position_valid(test, guess_hist[i], res_hist[i]) and test != guess_hist[i]:
             continue
         else:
             return False
     
     return True
-
 
 
 def quantity_valid(test, previous_test, res_test):
@@ -94,44 +88,4 @@ def position_valid(test, previous_test, res_test):
         qnt_positions +=1
 
     return True if qnt_positions == res_test[1] else False
-    
-
-def num_in_color(num_list):
-    num_colors = {
-        "1": RED,
-        "2": GREEN,
-        "3": BLUE,
-        "4": YELLOW,
-        "5": ORANGE,
-        "6": BLACK,
-        "7": WHITE
-    }
-
-    color_list = []
-
-    for i in num_list:
-        color_list.append(num_colors[str(i)])
-    
-    return color_list
-
-def color_in_num(color_list):
-
-    str_color_list = (color._text(i) for i in color_list)
-
-    num_colors = {
-        "Red": 1,
-        "Green": 2,
-        "Blue": 3,
-        "Yellow": 4,
-        "Orange": 5,
-        "Black": 6,
-        "White": 7
-    }
-
-    num_list = []
-
-    for i in str_color_list:
-        num_list.append(num_colors[i])
-
-    return num_list
     
